@@ -2,10 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.UsuarioEntity;
 import com.example.demo.repository.UsuarioRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -26,5 +23,10 @@ public class UsuarioController {
             return usuariobd;
         }
         return null;
+    }
+    @PostMapping("/save")
+    public UsuarioEntity saveUsuario(@RequestBody UsuarioEntity usuario) {
+        usuarioRepository.save(usuario);
+        return usuario;
     }
 }

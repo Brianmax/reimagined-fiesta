@@ -24,7 +24,7 @@ public class ArticuloEntity {
     @Column(name = "url_articulo")
     private String urlArticulo;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "usuario_id_fk")
     private UsuarioEntity usuario;
 }
