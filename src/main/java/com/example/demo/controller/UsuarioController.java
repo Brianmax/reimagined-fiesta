@@ -4,6 +4,8 @@ import com.example.demo.entity.UsuarioEntity;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +25,12 @@ public class UsuarioController {
             return usuariobd;
         }
         return null;
+    }
+    @GetMapping("/find")
+    public ArrayList<UsuarioEntity> findUsuario(
+            @RequestParam Date fechaNaciemiento,
+            @RequestParam String sexo) {
+        return usuarioRepository.findByFechaNacimientoAndSexo(fechaNaciemiento, sexo);
     }
     @PostMapping("/save")
     public UsuarioEntity saveUsuario(@RequestBody UsuarioEntity usuario) {
