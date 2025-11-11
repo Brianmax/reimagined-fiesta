@@ -22,5 +22,4 @@ public class UsuarioEntity {
     private Date fechaNacimiento;
     private String sexo;
     private String dni;
-
 }

@@ -23,4 +23,8 @@ public class ArticuloEntity {
     private Date fechaActualizacion;
     @Column(name = "url_articulo")
     private String urlArticulo;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id_fk")
+    private UsuarioEntity usuario;
 }
