@@ -28,8 +28,8 @@ public class UsuarioController {
     }
     @GetMapping("/find")
     public ArrayList<UsuarioEntity> findUsuario(
-            @RequestParam Date fechaNaciemiento,
-            @RequestParam String sexo) {
+            @RequestParam(required = false) Date fechaNaciemiento,
+            @RequestParam(required = false) String sexo) {
         return usuarioRepository.findByFechaNacimientoAndSexo(fechaNaciemiento, sexo);
     }
     @PostMapping("/save")
@@ -37,4 +37,10 @@ public class UsuarioController {
         usuarioRepository.save(usuario);
         return usuario;
     }
+
+    // hacer un find para articulo en el cual enviemos los siguientes parametros
+    // fechaCreacion
+    // fechaActualizacion
+    // traer los articulos en los que la fecha de creacion sea mayor a una determinada fecha
+    // o que su fecha de actualizacion sea menor a una determinada fecha
 }
