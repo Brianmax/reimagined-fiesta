@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ArticuloCreateDto;
 import com.example.demo.entity.ArticuloEntity;
 import com.example.demo.service.ArticuloService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class ArticuloController {
     }
 
     @PostMapping("/save")
-    public ArticuloEntity save(@RequestBody ArticuloEntity articulo) {
+    public ArticuloEntity save(@RequestBody ArticuloCreateDto articulo) {
         return articuloService.create(articulo);
     }
 }

@@ -19,7 +19,7 @@ public class ArticuloEntity {
     private String titulo;
     private String contenido;
     @Column(name = "fecha_creacion")
-    private Date fechaCreacion;
+    private Date fechaCreacion = new Date();
     @Column(name = "fecha_actualizacion")
     private Date fechaActualizacion;
     @Column(name = "url_articulo")
@@ -32,3 +32,5 @@ public class ArticuloEntity {
     @ManyToMany(mappedBy = "articulos")
     private ArrayList<CategoriaEntity> categorias;
 }
+
+// DTO: DATA TRANSFER OBJECT

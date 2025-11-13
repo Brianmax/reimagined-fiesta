@@ -1,13 +1,18 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.ArticuloCreateDto;
 import com.example.demo.entity.ArticuloEntity;
+import com.example.demo.entity.UsuarioEntity;
 import com.example.demo.repository.ArticuloRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.ArticuloService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class ArticuloServiceImpl implements ArticuloService {
     private final ArticuloRepository articuloRepository;
@@ -18,12 +23,23 @@ public class ArticuloServiceImpl implements ArticuloService {
         this.usuarioRepository = usuarioRepository;
     }
     @Override
-    public ArticuloEntity create(ArticuloEntity articulo) {
-        int idUsuario = articulo.getUsuario().getUsuarioId();
-        if(!usuarioRepository.existsById(idUsuario)) {
+    public ArticuloEntity create(ArticuloCreateDto articulo) {
+        int idUsuario = articulo.getUsuarioId();
+
+        Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findById(idUsuario);
+        if(usuarioOptional.isEmpty()) {
             return null;
         }
-        return articuloRepository.save(articulo);
+        UsuarioEntity usuarioEntity = usuarioOptional.get();
+        ArticuloEntity articuloEntity = new ArticuloEntity();
+        articuloEntity.setTitulo(articulo.getTitulo());
+        articuloEntity.setContenido(articulo.getContenido());
+        String uuidUrl = UUID.randomUUID().toString().replace("-", "");
+        String url = "www." + usuarioEntity.getUsername() + ".articulos/" + uuidUrl;
+        articuloEntity.setUrlArticulo(url);
+        articuloEntity.setUsuario(usuarioEntity);
+        articuloRepository.save(articuloEntity);
+        return articuloEntity;
     }
 
     @Override
