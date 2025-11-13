@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +27,5 @@ public class CategoriaEntity {
             joinColumns = @JoinColumn(name = "categoria_id_fk"),
             inverseJoinColumns = @JoinColumn(name = "articulo_id_fk")
     )
-    ArrayList<ArticuloEntity> articulos;
+    private List<ArticuloEntity> articulos;
 }

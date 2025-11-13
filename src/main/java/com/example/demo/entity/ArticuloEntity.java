@@ -1,11 +1,12 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "articulos")
@@ -29,8 +30,9 @@ public class ArticuloEntity {
     @JoinColumn(name = "usuario_id_fk")
     private UsuarioEntity usuario;
 
-    @ManyToMany(mappedBy = "articulos")
-    private ArrayList<CategoriaEntity> categorias;
+    @ManyToMany(mappedBy = "articulos", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CategoriaEntity> categorias;
 }
 
 // DTO: DATA TRANSFER OBJECT
