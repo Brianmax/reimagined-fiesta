@@ -21,11 +21,6 @@ public class CategoriaEntity {
     @Column(name = "nombre_categoria")
     private String nombreCategoria;
 
-    @ManyToMany
-    @JoinTable(
-            name = "articulo_categoria",
-            joinColumns = @JoinColumn(name = "categoria_id_fk"),
-            inverseJoinColumns = @JoinColumn(name = "articulo_id_fk")
-    )
+    @ManyToMany(mappedBy = "categorias")
     private List<ArticuloEntity> articulos;
 }

@@ -30,8 +30,12 @@ public class ArticuloEntity {
     @JoinColumn(name = "usuario_id_fk")
     private UsuarioEntity usuario;
 
-    @ManyToMany(mappedBy = "articulos", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "articulo_categoria",
+            joinColumns = @JoinColumn(name = "articulo_id_fk"),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id_fk")
+    )
     private List<CategoriaEntity> categorias;
 }
 

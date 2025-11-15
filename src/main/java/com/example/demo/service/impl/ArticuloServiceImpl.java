@@ -80,6 +80,7 @@ public class ArticuloServiceImpl implements ArticuloService {
         ArticuloEntity articuloEntity = articuloOptional.get();
         articuloEntity.setCategorias(categorias);
         articuloRepository.save(articuloEntity);
+
         return articuloEntity;
     }
 }
