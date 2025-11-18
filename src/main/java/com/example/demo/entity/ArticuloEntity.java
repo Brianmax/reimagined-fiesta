@@ -18,6 +18,7 @@ public class ArticuloEntity {
     @Column(name = "articulo_id")
     private int articuloId;
     private String titulo;
+    @Column(columnDefinition = "TEXT")
     private String contenido;
     @Column(name = "fecha_creacion")
     private Date fechaCreacion = new Date();

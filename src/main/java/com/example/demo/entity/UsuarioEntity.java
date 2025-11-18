@@ -23,4 +23,6 @@ public class UsuarioEntity {
     private Date fechaNacimiento;
     private String sexo;
     private String dni;
+    @Column(name = "comentarios_count", columnDefinition = "default = '0'")
+    private int comentariosCount = 0;
 }

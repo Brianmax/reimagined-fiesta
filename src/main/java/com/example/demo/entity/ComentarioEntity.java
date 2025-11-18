@@ -15,8 +15,11 @@ public class ComentarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comenatario_id")
     private int comentarioId;
+
+    @Column(length = 512)
     private String contenido;
-    private Date fechaCreacion;
+
+    private Date fechaCreacion = new Date();
     private Date fechaActualizacion;
 
     @ManyToOne
