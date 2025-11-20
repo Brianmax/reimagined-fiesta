@@ -4,6 +4,7 @@ import com.example.demo.dto.request.ArticuloCreateDto;
 import com.example.demo.dto.response.ArticuloResponseDto;
 import com.example.demo.entity.ArticuloEntity;
 import com.example.demo.service.ArticuloService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ArticuloController {
     }
 
     @PostMapping("/save")
-    public ArticuloEntity save(@RequestBody ArticuloCreateDto articulo) {
+    public ArticuloEntity save(@Valid @RequestBody ArticuloCreateDto articulo) {
         return articuloService.create(articulo);
     }
 
