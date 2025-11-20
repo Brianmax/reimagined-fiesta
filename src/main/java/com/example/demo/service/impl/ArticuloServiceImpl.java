@@ -12,6 +12,8 @@ import com.example.demo.repository.CategoriaRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.ArticuloService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,11 +27,13 @@ public class ArticuloServiceImpl implements ArticuloService {
     private final ArticuloRepository articuloRepository;
     private final UsuarioRepository usuarioRepository;
     private final CategoriaRepository categoriaRepository;
+    private final ModelMapper modelMapper;
 
-    public ArticuloServiceImpl(ArticuloRepository articuloRepository, UsuarioRepository usuarioRepository, CategoriaRepository categoriaRepository) {
+    public ArticuloServiceImpl(ArticuloRepository articuloRepository, UsuarioRepository usuarioRepository, CategoriaRepository categoriaRepository, ModelMapper modelMapper) {
         this.articuloRepository = articuloRepository;
         this.usuarioRepository = usuarioRepository;
         this.categoriaRepository = categoriaRepository;
+        this.modelMapper = modelMapper;
     }
     @Override
     public ArticuloResponseDto create(ArticuloCreateDto articulo) {
@@ -48,29 +52,15 @@ public class ArticuloServiceImpl implements ArticuloService {
         articuloEntity.setUrlArticulo(url);
         articuloEntity.setUsuario(usuarioEntity);
         articuloRepository.save(articuloEntity);
+        ArticuloResponseDto articuloResponseDto = modelMapper.map(articuloEntity, ArticuloResponseDto.class);
         List<CategoriaEntity> categorias = articuloEntity.getCategorias();
         List<CategoriaResponseArticuloDto> categoriasDto = new ArrayList<>();
         for(CategoriaEntity categoria: categorias) {
-            categoriasDto.add(new CategoriaResponseArticuloDto(
-                    categoria.getCategoriaId(),
-                    categoria.getNombreCategoria()
-            ));
+            categoriasDto.add(modelMapper.map(categoria, CategoriaResponseArticuloDto.class));
         }
-
-        return new ArticuloResponseDto(
-                articuloEntity.getArticuloId(),
-                articuloEntity.getTitulo(),
-                articuloEntity.getContenido(),
-                articuloEntity.getFechaCreacion(),
-                articuloEntity.getFechaActualizacion(),
-                articuloEntity.getUrlArticulo(),
-                new UsuarioResponseArticuloDto(
-                        articuloEntity.getUsuario().getUsuarioId(),
-                        articuloEntity.getUsuario().getUsername(),
-                        articuloEntity.getUsuario().getEmail()
-                ),
-                categoriasDto
-        );
+        articuloResponseDto.setUsuario(modelMapper.map(articuloEntity.getUsuario(), UsuarioResponseArticuloDto.class));
+        articuloResponseDto.setCategorias(categoriasDto);
+        return articuloResponseDto;
     }
 
     @Override
@@ -84,7 +74,7 @@ public class ArticuloServiceImpl implements ArticuloService {
         if (articulo == null) {
             return null;
         }
-        return fromEntityToDto(articulo);
+        return modelMapper.map(articulo, ArticuloResponseDto.class);
     }
 
     @Override
@@ -111,37 +101,5 @@ public class ArticuloServiceImpl implements ArticuloService {
         articuloRepository.save(articuloEntity);
 
         return articuloEntity;
-    }
-
-    private ArticuloResponseDto fromEntityToDto(ArticuloEntity articulo) {
-        // construyendo el articulo dto
-        ArticuloResponseDto articuloDto = new ArticuloResponseDto();
-        articuloDto.setArticuloId(articulo.getArticuloId());
-        articuloDto.setTitulo(articulo.getTitulo());
-        articuloDto.setContenido(articulo.getContenido());
-        articuloDto.setFechaActualizacion(articulo.getFechaActualizacion());
-        articuloDto.setFechaCreacion(articulo.getFechaCreacion());
-        articuloDto.setUrlArticulo(articulo.getUrlArticulo());
-        // construyendo el usuario dto
-        UsuarioResponseArticuloDto usuario = new UsuarioResponseArticuloDto();
-        UsuarioEntity usuarioDb = articulo.getUsuario();
-        usuario.setIdUsuario(usuarioDb.getUsuarioId());
-        usuario.setUsername(usuarioDb.getUsername());
-        usuario.setEmail(usuarioDb.getEmail());
-        articuloDto.setUsuario(usuario);
-
-        // construyendo categorias
-        ArrayList<CategoriaResponseArticuloDto> categorias = new ArrayList<>();
-        List<CategoriaEntity> categoriasDb = articulo.getCategorias();
-        for(CategoriaEntity categoria: categoriasDb) {
-            categorias.add(
-                    new CategoriaResponseArticuloDto(
-                            categoria.getCategoriaId(),
-                            categoria.getNombreCategoria())
-            );
-        }
-
-        articuloDto.setCategorias(categorias);
-        return articuloDto;
     }
 }
