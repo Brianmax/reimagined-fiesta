@@ -16,7 +16,6 @@ public class ArticuloCreateDto {
     @NotBlank(message = "El contenido es obligatorio")
     @Size(min = 10, message = "El contenido debe de tener mas de 10 caracteres")
     private String contenido;
-
     @Positive(message = "El ID del usuario debe de ser un numero positivo")
     private int usuarioId;
 }

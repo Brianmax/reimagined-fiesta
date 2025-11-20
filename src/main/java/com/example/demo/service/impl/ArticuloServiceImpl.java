@@ -32,7 +32,7 @@ public class ArticuloServiceImpl implements ArticuloService {
         this.categoriaRepository = categoriaRepository;
     }
     @Override
-    public ArticuloEntity create(ArticuloCreateDto articulo) {
+    public ArticuloResponseDto create(ArticuloCreateDto articulo) {
         int idUsuario = articulo.getUsuarioId();
 
         Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findById(idUsuario);
@@ -48,7 +48,29 @@ public class ArticuloServiceImpl implements ArticuloService {
         articuloEntity.setUrlArticulo(url);
         articuloEntity.setUsuario(usuarioEntity);
         articuloRepository.save(articuloEntity);
-        return articuloEntity;
+        List<CategoriaEntity> categorias = articuloEntity.getCategorias();
+        List<CategoriaResponseArticuloDto> categoriasDto = new ArrayList<>();
+        for(CategoriaEntity categoria: categorias) {
+            categoriasDto.add(new CategoriaResponseArticuloDto(
+                    categoria.getCategoriaId(),
+                    categoria.getNombreCategoria()
+            ));
+        }
+
+        return new ArticuloResponseDto(
+                articuloEntity.getArticuloId(),
+                articuloEntity.getTitulo(),
+                articuloEntity.getContenido(),
+                articuloEntity.getFechaCreacion(),
+                articuloEntity.getFechaActualizacion(),
+                articuloEntity.getUrlArticulo(),
+                new UsuarioResponseArticuloDto(
+                        articuloEntity.getUsuario().getUsuarioId(),
+                        articuloEntity.getUsuario().getUsername(),
+                        articuloEntity.getUsuario().getEmail()
+                ),
+                categoriasDto
+        );
     }
 
     @Override
