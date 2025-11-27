@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 
@@ -27,6 +28,6 @@ public class UsuarioEntity {
     private Date fechaNacimiento;
     private String sexo;
     private String dni;
-    @Column(name = "comentarios_count", columnDefinition = "default = '0'")
+    @Column(name = "comentarios_count")
     private int comentariosCount = 0;
 }
