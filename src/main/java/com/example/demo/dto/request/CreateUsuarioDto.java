@@ -15,4 +15,5 @@ public class CreateUsuarioDto {
     private Date fechaNacimiento;
     private String sexo;
     private String dni;
+    private String role;
 }
