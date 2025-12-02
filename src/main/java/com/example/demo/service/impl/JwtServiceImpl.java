@@ -4,12 +4,12 @@ import com.example.demo.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.bouncycastle.pqc.legacy.math.ntru.polynomial.SparseTernaryPolynomial;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 
 public class JwtServiceImpl implements JwtService {
     @Override
@@ -18,7 +18,7 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith("", SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, getSignKey())
                 .compact();
     }
 
@@ -39,5 +39,10 @@ public class JwtServiceImpl implements JwtService {
                 .setSigningKey("")
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    private Key getSignKey() {
+        byte[] key = Base64.getDecoder().decode("RVHrIphEwxczz+FQyxwibYcDj701rULKsYejSFDt3m4=");
+        return Keys.hmacShaKeyFor(key);
     }
 }
