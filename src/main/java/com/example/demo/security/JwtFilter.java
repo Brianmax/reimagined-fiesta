@@ -34,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (StringUtils.isEmpty(authorization) || !StringUtils.startsWithIgnoreCase(authorization, "Bearer ")) {
             filterChain.doFilter(request, response);
+            return;
         }
         String jwt = authorization.substring(7);
         String username = jwtService.extractUsername(jwt);

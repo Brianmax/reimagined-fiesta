@@ -38,13 +38,13 @@ public class JwtServiceImpl implements JwtService {
     }
     private Claims extractClaims(String token) {
         return Jwts.parser()
-                .setSigningKey("")
+                .setSigningKey(getSignKey())
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     private Key getSignKey() {
-        byte[] key = Base64.getDecoder().decode("RVHrIphEwxczz+FQyxwibYcDj701rULKsYejSFDt3m4=");
+        byte[] key = Base64.getDecoder().decode("85732b878c0f544da4a863804775ef3914e8ccb82b08820a278302c5b826e291");
         return Keys.hmacShaKeyFor(key);
     }
 }
