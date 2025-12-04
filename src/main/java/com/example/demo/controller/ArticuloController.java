@@ -7,6 +7,7 @@ import com.example.demo.service.ArticuloService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class ArticuloController {
         this.articuloService = articuloService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<ArticuloResponseDto> save(@Valid @RequestBody ArticuloCreateDto articulo) {
         ArticuloResponseDto art = articuloService.create(articulo);
